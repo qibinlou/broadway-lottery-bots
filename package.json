@@ -1,0 +1,19 @@
+{
+  "name": "broadway-lottery",
+  "version": "0.0.1",
+  "description": "Cronjob to run broadway lottery periodically",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "cronjob",
+    "broadway",
+    "lottery"
+  ],
+  "author": "Leo Lou",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^1.8.0"
+  }
+}
