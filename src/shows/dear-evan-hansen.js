@@ -49,4 +49,6 @@ function isLotteryAvailaible(content) {
         button.click();
     }
     console.log('Successfully checked in for today\'s lottery');
+
+    await browser.close();
 })();
