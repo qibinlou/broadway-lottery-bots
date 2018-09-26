@@ -3,7 +3,10 @@ const puppeteer = require('puppeteer');
 const UNAVAILAIBLE_MESSAGE = 'there are no available drawings at this time';
 
 function getPropertyOrDefault(key, defaultValue) {
-    return process.env[key] || defaultValue;
+    if (process.env.hasOwnProperty(key)) {
+        return process.env[key];
+    }
+    return defaultValue;
 }
 
 async function fbLogin(fbLoginPage) {
