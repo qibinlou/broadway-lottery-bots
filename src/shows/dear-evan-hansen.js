@@ -23,7 +23,10 @@ function isLotteryAvailaible(content) {
 }
 
 (async () => {
-    const browser = await puppeteer.launch({headless: false});
+    const browser = await puppeteer.launch({
+        headless: getPropertyOrDefault('HEADLESS') === 'true',
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
     let page = await browser.newPage();
     await page.goto('https://my.socialtoaster.com/st/campaign_landing/?key=dearevanhansenlottery&source=iframe', {waitUntil: 'networkidle2'});
     page.click('#st_sign_in');
@@ -40,12 +43,14 @@ function isLotteryAvailaible(content) {
     const content = await page.$eval('#st_campaign_content', el => el.innerText);
     if (isLotteryAvailaible(content)) {
         console.warn('Lottery is not available!');
+        await browser.close();
         return;
     }
 
     const lotteryButtons = await page.$$('.lottery_show_button .st_campaign_button');
     if (!lotteryButtons || lotteryButtons.length === 0) {
         console.log('You may already checked in for the lottery today!');
+        await browser.close();
         return;
     }
     for (let button of lotteryButtons) {
