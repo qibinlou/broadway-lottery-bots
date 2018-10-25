@@ -14,6 +14,7 @@
   "author": "Leo Lou",
   "license": "MIT",
   "dependencies": {
+    "messaging-api-telegram": "^0.7.11",
     "puppeteer": "^1.8.0"
   }
 }

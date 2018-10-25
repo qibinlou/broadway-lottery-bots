@@ -1,13 +1,8 @@
 const puppeteer = require('puppeteer');
+const getPropertyOrDefault = require('../utils/getPropertyOrDefault');
+const TelegramMessenger = require('../messenger/TelegramMessenger');
 
 const UNAVAILAIBLE_MESSAGE = 'there are no available drawings at this time';
-
-function getPropertyOrDefault(key, defaultValue) {
-    if (process.env.hasOwnProperty(key)) {
-        return process.env[key];
-    }
-    return defaultValue;
-}
 
 async function fbLogin(fbLoginPage) {
     await fbLoginPage.type('input#email', getPropertyOrDefault('FB_USERNAME'));
@@ -43,6 +38,7 @@ function isLotteryAvailaible(content) {
     const content = await page.$eval('#st_campaign_content', el => el.innerText);
     if (isLotteryAvailaible(content)) {
         console.warn('Lottery is not available!');
+        TelegramMessenger.sendMessage(`${new Date().toString()} Lottery is not available!`);
         await browser.close();
         return;
     }
@@ -50,6 +46,7 @@ function isLotteryAvailaible(content) {
     const lotteryButtons = await page.$$('.lottery_show_button .st_campaign_button');
     if (!lotteryButtons || lotteryButtons.length === 0) {
         console.log('You may already checked in for the lottery today!');
+        TelegramMessenger.sendMessage(`${new Date().toString()} 'You may already checked in for the lottery today!'`);
         await browser.close();
         return;
     }
@@ -57,6 +54,7 @@ function isLotteryAvailaible(content) {
         button.click();
     }
     console.log('Successfully checked in for today\'s lottery');
+    TelegramMessenger.sendMessage(`${new Date().toString()} Successfully checked in for today's lottery`);
 
     await browser.close();
 })();
