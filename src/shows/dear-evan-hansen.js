@@ -61,6 +61,7 @@ function logAndNotify(message) {
     }
     for (let button of lotteryButtons) {
         button.click();
+        await page.waitFor(1000);
     }
     logAndNotify('Successfully checked in for today\'s lottery');
 
